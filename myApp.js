@@ -1,7 +1,23 @@
 require('dotenv').config();
 
+const mongoose = require('mongoose');
 
-let Person;
+const uri = process.env.MONGO_URI;
+
+if (!uri) {
+  throw new Error("🚨 MONGO_URI n'est pas défini. Vérifie ton .env");
+}
+const { Schema } =mongoose;
+mongoose.connect(uri, {useNewUrlParser: true,useUnifiedTopology: true,});
+
+
+ const personSchema = new Schema({
+  name: { type: String, required: true },
+  age: Number,
+  favoriteFoods: [String]
+});
+
+let Person = mongoose.model("Person", personSchema);
 
 const createAndSavePerson = (done) => {
   done(null /*, data*/);
